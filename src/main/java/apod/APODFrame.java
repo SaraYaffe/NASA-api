@@ -1,13 +1,16 @@
 package apod;
 
 import apod.service.ApodData;
-import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+
 
 public class APODFrame extends JFrame {
 
@@ -16,13 +19,16 @@ public class APODFrame extends JFrame {
     private final JLabel datePrompt;
     private final JTextField dateField;
     private final JButton submit;
-    private final JLabel photo;
+    private JLabel photo;
 
     private GetAPOD getAPOD = new GetAPOD();
     private final APODPresenter presenter;
 
 
     public APODFrame(){
+
+        //fix layout - separate text fields for day/month/year
+        //validate user input
 
         presenter = new APODPresenter(this, getAPOD);
 
@@ -44,13 +50,17 @@ public class APODFrame extends JFrame {
         submit.addActionListener(this::onSubmitClick);
         add(submit);
 
-        photo = new JLabel();
-        add(photo);
+//        photo = new JLabel();
+//        add(photo);
 
     }
 
     private void onSubmitClick(ActionEvent actionEvent) {
-        disposable = getAPOD.getApod(dateField.getText())
+
+        //parse date field to correct format
+        String formattedDate;
+
+        disposable = getAPOD.getApod("2022-05-04") //formattedDate
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
                 .subscribe(this::onNext, this::onError);
@@ -61,9 +71,19 @@ public class APODFrame extends JFrame {
         }
     }
 
-    private void onNext(ApodData apodData){
-        String picture = apodData.getDate();
-        photo.setText(apodData.getUrl());
+    private void onNext(ApodData apodData) {
+        String picture = apodData.getUrl();
+
+        try {
+            URL url = new URL(picture);
+            BufferedImage image = ImageIO.read(url);
+            photo = new JLabel(new ImageIcon(image));
+            add(photo);
+            photo.setVisible(true);
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        }
+
     }
 
     private void onError(Throwable throwable) {
