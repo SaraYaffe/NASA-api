@@ -20,6 +20,7 @@ public class APODFrame extends JFrame {
     private final JTextField dateField;
     private final JButton submit;
     private JLabel photo;
+    private JLabel description;
 
 
     private final APODPresenter presenter;
@@ -52,21 +53,28 @@ public class APODFrame extends JFrame {
     }
 
     private void onSubmitClick(ActionEvent actionEvent) {
-        presenter.loadPhotoFromDate("2022-05-10");
+        presenter.loadFromDate("2022-05-10");
     }
 
-    public void setPhoto(String urlPhoto){
+    public void setPhoto(String photoUrl){
         try {
-            URL url = new URL(urlPhoto);
+            URL url = new URL(photoUrl);
             BufferedImage image = ImageIO.read(url);
             photo = new JLabel(new ImageIcon(image));
             add(photo);
-            photo.setVisible(true);
         } catch (Exception exp) {
             //if media type is not image, will get null pointer exception. get pic from day before instead
             exp.printStackTrace();
         }
     }
+
+    public void setDescription(String photoDescription){
+        description = new JLabel();
+        description.setText(photoDescription);
+        add(description);
+    }
+
+
 
 
 

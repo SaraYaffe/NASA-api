@@ -17,7 +17,7 @@ public class APODPresenter {
         this.model = model;
     }
 
-    public void loadPhotoFromDate(String date){
+    public void loadFromDate(String date){
         //parse date field text to correct format
         String formattedDate;
 
@@ -28,14 +28,18 @@ public class APODPresenter {
     }
 
     private void onNext(ApodData apodData) {
-        String urlPhoto = apodData.getUrl();
-        view.setPhoto(urlPhoto);
+        String photoUrl = apodData.getUrl();
+        view.setPhoto(photoUrl);
+
+        String photoDescription = apodData.getDescription();
+        view.setDescription(photoDescription);
 
     }
 
     private void onError(Throwable throwable) {
         throwable.printStackTrace();
     }
+
 
 }
 
