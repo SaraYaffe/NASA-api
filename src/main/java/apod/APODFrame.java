@@ -8,10 +8,14 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
-//include descriptions from api json
-//datepicker JdateChooser - find one to use
-//fix testclass
-//add google checks file
+/*
+TO DO:
+* datepicker - add calender in new frame for user to choose date
+* fix presenter test class
+* add google checks file
+* fix layout
+* horoscope api
+* */
 
 
 public class APODFrame extends JFrame {
@@ -34,7 +38,7 @@ public class APODFrame extends JFrame {
 
         setLayout(new FlowLayout());
 
-        datePrompt = new JLabel("enter your birthday");
+        datePrompt = new JLabel("enter Date");
         datePrompt.setPreferredSize(new Dimension(40, 20));
         add(datePrompt);
 
@@ -45,6 +49,10 @@ public class APODFrame extends JFrame {
         submit = new JButton("submit");
         submit.addActionListener(this::onSubmitClick);
         add(submit);
+
+        description = new JLabel();
+        add(description);
+
 
         AstronomyPicOfDayServiceFactory factory
                 = new AstronomyPicOfDayServiceFactory();
@@ -69,12 +77,8 @@ public class APODFrame extends JFrame {
     }
 
     public void setDescription(String photoDescription){
-        description = new JLabel();
         description.setText(photoDescription);
-        add(description);
     }
-
-
 
 
 
