@@ -4,7 +4,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface AstronomyPictureOfDayService {
+public interface AstronomyPicOfDayService {
 
     String api_key = "DEMO_KEY";
 

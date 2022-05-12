@@ -1,6 +1,8 @@
 package apod;
 
 import apod.service.ApodData;
+import apod.service.AstronomyPicOfDayService;
+import apod.service.AstronomyPicOfDayServiceFactory;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -14,26 +16,29 @@ import java.net.URL;
 
 public class APODFrame extends JFrame {
 
-    Disposable disposable;
+    private Disposable disposable;
 
     private final JLabel datePrompt;
     private final JTextField dateField;
     private final JButton submit;
     private JLabel photo;
 
-    private GetAPOD getAPOD = new GetAPOD();
+    private AstronomyPicOfDayServiceFactory factory
+            = new AstronomyPicOfDayServiceFactory();
+    private final AstronomyPicOfDayService model
+            = factory.getInstance();
     private final APODPresenter presenter;
 
 
-    public APODFrame(){
+    public APODFrame() {
 
-        //fix layout - separate text fields for day/month/year
-        //validate user input
+        //datepicker JdateChooser - find one to use
+        //include descriptions from api json
 
-        presenter = new APODPresenter(this, getAPOD);
+        presenter = new APODPresenter(this, factory.getInstance());
 
         setTitle("Astronomy Picture of the Day");
-        setSize(300,200);
+        setSize(300, 200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         setLayout(new FlowLayout());
@@ -57,18 +62,13 @@ public class APODFrame extends JFrame {
 
     private void onSubmitClick(ActionEvent actionEvent) {
 
-        //parse date field to correct format
+        //parse date field text to correct format
         String formattedDate;
 
-        disposable = getAPOD.getApod("2022-05-04") //formattedDate
+        disposable = model.getAPOD("2022-05-10") //formattedDate
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
                 .subscribe(this::onNext, this::onError);
-    }
-    public void cancel(){
-        if (disposable != null) {
-            disposable.dispose();
-        }
     }
 
     private void onNext(ApodData apodData) {
@@ -81,6 +81,7 @@ public class APODFrame extends JFrame {
             add(photo);
             photo.setVisible(true);
         } catch (Exception exp) {
+            //if media type is not image, will get null pointer exception
             exp.printStackTrace();
         }
 
@@ -91,7 +92,7 @@ public class APODFrame extends JFrame {
     }
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         JFrame frame = new APODFrame();
         frame.setVisible(true);
     }
