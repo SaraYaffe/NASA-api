@@ -72,12 +72,13 @@ public class APODFrame extends JFrame {
             photo.setIcon(imageIcon);
 
         } catch (Exception exp) {
-            //if media type is not image, will get null pointer exception. get pic from day before instead
+            //if media type is not image, will get null pointer exception? get pic from day before instead
             exp.printStackTrace();
         }
     }
 
-    public void setDescription(String photoDescription){
+    public void setDescription(String photoDescription) {
+
         description.setText(photoDescription);
     }
 
