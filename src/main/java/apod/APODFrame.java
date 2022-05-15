@@ -1,6 +1,8 @@
 package apod;
 
 import apod.service.AstronomyPicOfDayServiceFactory;
+import com.github.lgooddatepicker.components.DatePicker;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -10,18 +12,19 @@ import java.net.URL;
 
 /*
 TO DO:
-* datepicker - add calender in new frame for user to choose date
 * fix presenter test class
 * add google checks file
-* fix layout
+* gui
+    resize photo
+    print out description properly
+    general layout
 * horoscope api
 * */
 
 
 public class APODFrame extends JFrame {
 
-    private final JLabel datePrompt;
-    private final JTextField dateField;
+    private final DatePicker datePicker;
     private final JButton submit;
     private JLabel photo;
     private JLabel description;
@@ -38,38 +41,36 @@ public class APODFrame extends JFrame {
 
         setLayout(new FlowLayout());
 
-        datePrompt = new JLabel("enter Date");
-        datePrompt.setPreferredSize(new Dimension(40, 20));
-        add(datePrompt);
+        datePicker = new DatePicker();
+        add(datePicker);
 
-        dateField = new JTextField();
-        dateField.setPreferredSize(new Dimension(40, 30));
-        add(dateField);
-
-        submit = new JButton("submit");
+        submit = new JButton("enter date");
         submit.addActionListener(this::onSubmitClick);
         add(submit);
 
         description = new JLabel();
         add(description);
 
+        photo = new JLabel();
+        add(photo);
 
-        AstronomyPicOfDayServiceFactory factory
-                = new AstronomyPicOfDayServiceFactory();
+
+        AstronomyPicOfDayServiceFactory factory = new AstronomyPicOfDayServiceFactory();
         presenter = new APODPresenter(this, factory.getInstance());
 
     }
 
     private void onSubmitClick(ActionEvent actionEvent) {
-        presenter.loadFromDate("2022-05-10");
+        presenter.loadFromDate(datePicker.getDate().toString());
     }
 
     public void setPhoto(String photoUrl){
         try {
             URL url = new URL(photoUrl);
             BufferedImage image = ImageIO.read(url);
-            photo = new JLabel(new ImageIcon(image));
-            add(photo);
+            ImageIcon imageIcon = new ImageIcon(image);
+            photo.setIcon(imageIcon);
+
         } catch (Exception exp) {
             //if media type is not image, will get null pointer exception. get pic from day before instead
             exp.printStackTrace();
@@ -79,7 +80,6 @@ public class APODFrame extends JFrame {
     public void setDescription(String photoDescription){
         description.setText(photoDescription);
     }
-
 
 
     public static void main(String[] args) {

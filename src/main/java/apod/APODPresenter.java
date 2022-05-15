@@ -18,10 +18,8 @@ public class APODPresenter {
     }
 
     public void loadFromDate(String date){
-        //parse date field text to correct format
-        String formattedDate;
 
-        disposable = model.getAPOD(date) //formattedDate
+        disposable = model.getAPOD(date)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
                 .subscribe(this::onNext, this::onError);
