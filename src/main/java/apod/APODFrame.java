@@ -9,16 +9,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.time.LocalDate;
 
 /*
 TO DO:
 * fix presenter test class
-* add google checks file
 * gui
     resize photo
     print out description properly
     general layout
-* horoscope api
+* fix checkstyle error
+* horoscope api - find alternative
 * */
 
 
@@ -28,6 +29,8 @@ public class APODFrame extends JFrame {
     private final JButton submit;
     private JLabel photo;
     private JLabel description;
+    private JButton prevYear;
+    private JButton nextYear;
 
 
     private final APODPresenter presenter;
@@ -54,10 +57,29 @@ public class APODFrame extends JFrame {
         photo = new JLabel();
         add(photo);
 
+        prevYear = new JButton("Previous");
+        prevYear.addActionListener(this::onSubmitClickPrev);
+        add(prevYear);
+
+        nextYear = new JButton("Next");
+        nextYear.addActionListener(this::onSubmitClickNext);
+        add(nextYear);
 
         AstronomyPicOfDayServiceFactory factory = new AstronomyPicOfDayServiceFactory();
         presenter = new APODPresenter(this, factory.getInstance());
 
+    }
+
+    private void onSubmitClickPrev(ActionEvent actionEvent) {
+        LocalDate newDate = datePicker.getDate().minusYears(1);
+        datePicker.setDate(newDate);
+        presenter.loadFromDate(datePicker.getDate().toString());
+    }
+
+    private void onSubmitClickNext(ActionEvent actionEvent) {
+        LocalDate newDate = datePicker.getDate().plusYears(1);
+        datePicker.setDate(newDate);
+        presenter.loadFromDate(datePicker.getDate().toString());
     }
 
     private void onSubmitClick(ActionEvent actionEvent) {
