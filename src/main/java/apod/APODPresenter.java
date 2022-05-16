@@ -32,6 +32,9 @@ public class APODPresenter {
         String photoDescription = apodData.getDescription();
         view.setDescription(photoDescription);
 
+        String photoTitle = apodData.getTitle();
+        view.setPhotoTitle(photoTitle);
+
     }
 
     private void onError(Throwable throwable) {

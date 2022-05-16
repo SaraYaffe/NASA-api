@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 
@@ -16,10 +17,10 @@ TO DO:
 * fix presenter test class
 * gui
     resize photo
-    print out description properly
+    format title and description properly
     general layout
 * fix checkstyle error
-* horoscope api - find alternative
+* horoscope api - find alternative or ditch it
 * */
 
 
@@ -28,6 +29,7 @@ public class APODFrame extends JFrame {
     private final DatePicker datePicker;
     private final JButton submit;
     private JLabel photo;
+    private JLabel photoTitle;
     private JLabel description;
     private JButton prevYear;
     private JButton nextYear;
@@ -50,6 +52,9 @@ public class APODFrame extends JFrame {
         submit = new JButton("enter date");
         submit.addActionListener(this::onSubmitClick);
         add(submit);
+
+        photoTitle = new JLabel();
+        add(photoTitle);
 
         description = new JLabel();
         add(description);
@@ -99,9 +104,18 @@ public class APODFrame extends JFrame {
         }
     }
 
+//    public void setVideo(String videoURL) {
+//
+//    }
+
     public void setDescription(String photoDescription) {
 
         description.setText(photoDescription);
+    }
+
+    public void setPhotoTitle(String apodTitle) {
+
+        photoTitle.setText(apodTitle);
     }
 
 
