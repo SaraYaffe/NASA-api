@@ -13,16 +13,12 @@ import java.time.LocalDate;
 /*
 TO DO:
 * fix presenter test class
-* gui
-    resize photo
-    format title and description properly
-    general layout
 * fix checkstyle error
-* horoscope api - find alternative or ditch it
+* (make featured photos downloadable?)
 * */
 
 
-public class APODFrame extends JFrame {
+public class ApodFrame extends JFrame {
 
     private final DatePicker datePicker;
     private final JButton submit;
@@ -39,11 +35,10 @@ public class APODFrame extends JFrame {
     private JPanel rightPanel;
 
 
+    private final ApodPresenter presenter;
 
-    private final APODPresenter presenter;
 
-
-    public APODFrame() {
+    public ApodFrame() {
 
         setTitle("Astronomy Picture of the Day");
         setSize(300, 200);
@@ -97,7 +92,7 @@ public class APODFrame extends JFrame {
         rightPanel.add(nextYear, BorderLayout.EAST);
 
         AstronomyPicOfDayServiceFactory factory = new AstronomyPicOfDayServiceFactory();
-        presenter = new APODPresenter(this, factory.getInstance());
+        presenter = new ApodPresenter(this, factory.getInstance());
 
     }
 
@@ -117,7 +112,7 @@ public class APODFrame extends JFrame {
         presenter.loadFromDate(datePicker.getDate().toString());
     }
 
-    public void setPhoto(BufferedImage image){
+    public void setPhoto(BufferedImage image) {
         Image scaledImage = image.getScaledInstance(650, 500, Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon(scaledImage);
         photo.setIcon(imageIcon);
@@ -139,7 +134,7 @@ public class APODFrame extends JFrame {
 
 
     public static void main(String[] args) {
-        JFrame frame = new APODFrame();
+        JFrame frame = new ApodFrame();
         frame.setVisible(true);
     }
 

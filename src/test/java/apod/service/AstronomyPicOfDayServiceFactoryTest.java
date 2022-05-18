@@ -13,7 +13,7 @@ class AstronomyPicOfDayServiceFactoryTest {
         AstronomyPicOfDayService service = factory.getInstance();
 
         //when
-        ApodData apodData = service.getAPOD("2022-05-10")
+        ApodData apodData = service.getApod("2022-05-10")
                 .blockingGet();
 
         //then

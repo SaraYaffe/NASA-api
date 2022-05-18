@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AstronomyPicOfDayServiceFactory {
 
-    public AstronomyPicOfDayService getInstance(){
+    public AstronomyPicOfDayService getInstance() {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.nasa.gov/")

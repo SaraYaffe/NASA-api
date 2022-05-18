@@ -6,27 +6,25 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
 
-public class APODPresenter {
+public class ApodPresenter {
 
-    private final APODFrame view;
+    private final ApodFrame view;
     private final AstronomyPicOfDayService model;
     private Disposable disposable;
 
-    public APODPresenter(APODFrame view, AstronomyPicOfDayService model) {
+    public ApodPresenter(ApodFrame view, AstronomyPicOfDayService model) {
         this.view = view;
         this.model = model;
     }
 
     public void loadFromDate(String date) {
 
-        disposable = model.getAPOD(date)
+        disposable = model.getApod(date)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
                 .subscribe(this::onNext, this::onError);
@@ -40,10 +38,7 @@ public class APODPresenter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (image != null) {
-            view.setPhoto(image);
-        }
-        //if media type is not image, will get null pointer exception? get pic from day before instead
+        view.setPhoto(image);
 
         String photoDescription = apodData.getDescription();
         view.setDescription(photoDescription);
