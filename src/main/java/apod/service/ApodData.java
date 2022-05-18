@@ -2,6 +2,8 @@ package apod.service;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.net.URL;
+
 public class ApodData {
 
     String date;
@@ -10,7 +12,7 @@ public class ApodData {
     @SerializedName("media_type")
     String mediaType;
     String title;
-    String url;
+    URL url;
 
     public String getDate() {
         return date;
@@ -28,7 +30,7 @@ public class ApodData {
         return title;
     }
 
-    public String getUrl() {
+    public URL getUrl() {
         return url;
     }
 
