@@ -30,7 +30,7 @@ public class ApodPresenter {
                 .subscribe(this::onNext, this::onError);
     }
 
-    private void onNext(ApodData apodData) throws IOException {
+    private void onNext(ApodData apodData) {
         URL photoUrl = apodData.getUrl();
         BufferedImage image = null;
         try {

@@ -10,14 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 
-/*
-TO DO:
-* fix presenter test class
-* fix checkstyle error
-* (make featured photos downloadable?)
-* */
-
-
 public class ApodFrame extends JFrame {
 
     private final DatePicker datePicker;
@@ -117,10 +109,6 @@ public class ApodFrame extends JFrame {
         ImageIcon imageIcon = new ImageIcon(scaledImage);
         photo.setIcon(imageIcon);
     }
-
-//    public void setVideo(String videoURL) {
-//
-//    }
 
     public void setDescription(String photoDescription) {
 
