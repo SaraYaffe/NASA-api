@@ -8,12 +8,8 @@ import io.reactivex.schedulers.Schedulers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import javax.imageio.ImageIO;
-
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 
 import static org.mockito.Mockito.*;
 
@@ -26,7 +22,7 @@ class ApodPresenterTest {
     ApodData apodData = mock(ApodData.class);
 
     @BeforeAll
-    static void beforeAllTests(){
+    static void beforeAllTests() {
         //runs before all tests in this class
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setNewThreadSchedulerHandler(scheduler -> Schedulers.trampoline());
