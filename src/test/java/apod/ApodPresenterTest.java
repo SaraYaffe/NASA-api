@@ -8,6 +8,8 @@ import io.reactivex.schedulers.Schedulers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
@@ -41,7 +43,7 @@ class ApodPresenterTest {
         presenter.loadFromDate("2022-05-17");
 
         //then
-        //verify(view).setPhoto(ImageIO.read(new URL("https://apod.nasa.gov/apod/image/2205/DiamondMoonWSMALL1024.jpg")));
+        verify(view).setPhoto(any(BufferedImage.class));
         verify(view).setPhotoTitle("NGC 1316: After Galaxies Collide");
     }
 }
