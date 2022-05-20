@@ -1,17 +1,12 @@
-package apod;
+package apod.service;
 
-import apod.service.ApodData;
-import apod.service.AstronomyPictureOfDayService;
-import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class GetAPOD {
+public class AstronomyPicOfDayServiceFactory {
 
-    private final AstronomyPictureOfDayService service;
-
-    public GetAPOD(){
+    public AstronomyPicOfDayService getInstance() {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.nasa.gov/")
@@ -19,12 +14,6 @@ public class GetAPOD {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
-        service = retrofit.create(AstronomyPictureOfDayService.class);
+        return retrofit.create(AstronomyPicOfDayService.class);
     }
-
-    public Observable<ApodData> getApod(String date){
-        return service.getAPOD(date);
-    }
-
-
 }
