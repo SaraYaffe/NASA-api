@@ -2,27 +2,29 @@ package apod;
 
 import apod.service.AstronomyPicOfDayServiceFactory;
 import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
+import java.time.LocalDate;
 
 /*
 To Do:
-limit datepicker timeframe (should only go as far back as the api has been providing photos for
----remove prev and next buttons
----remove submit button - photo should be accessed as soon as date is picked
----default date
 readme file
 provide video url
 downloadable photo
+add screenshots to readme, re-run jar file
 * */
+
 public class ApodFrame extends JFrame {
 
     private final DatePicker datePicker;
+    private final DatePickerSettings dateSettings;
+    private final LocalDate firstApod = LocalDate.of(1995, 6, 16);
+
     private JLabel photo;
     private JLabel photoTitle;
     private JTextArea description;
@@ -60,8 +62,10 @@ public class ApodFrame extends JFrame {
         add(leftPanel, BorderLayout.WEST);
         add(rightPanel, BorderLayout.EAST);
 
+        dateSettings = new DatePickerSettings();
 
-        datePicker = new DatePicker();
+        datePicker = new DatePicker(dateSettings);
+        dateSettings.setDateRangeLimits(firstApod, LocalDate.now());
         datePicker.setDateToToday();
         presenter.loadFromDate(datePicker.getDate().toString());
         datePicker.addDateChangeListener(this::onDateChosen);
