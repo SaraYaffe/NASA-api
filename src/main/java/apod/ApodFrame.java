@@ -161,7 +161,7 @@ public class ApodFrame extends JFrame {
 
     public void download(URL url) {
         try {
-            File file = new File (//obv wont work for the user - fix
+            File file = new File(//obv wont work for the user - fix
                     "C:\\Users\\sarab\\IdeaProjects\\nasa_api\\saved_photos\\photo1.jpg");
             FileUtils.copyURLToFile(url, file);
         } catch (IOException ex) {

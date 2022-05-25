@@ -20,7 +20,7 @@ Date Picker - calender includes dates from June 16, 1995 through today's date
 ![Date Picker](screenshots/datepicker.png)
 
 Hyperlink provided for dates where a video is returned 
-![Hyperlink for video](screenshots/clickable videourl.png)
+![Hyperlink for video](screenshots/hyperlink.png)
 
 Button to download currently displayed photo
 ![Download photo](screenshots/downloadphoto.png)
