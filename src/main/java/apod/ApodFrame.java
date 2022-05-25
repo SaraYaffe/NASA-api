@@ -2,23 +2,30 @@ package apod;
 
 import apod.service.AstronomyPicOfDayServiceFactory;
 import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.time.LocalDate;
 
+
+/*
+To Do:
+limit datepicker timeframe (should only go as far back as the api has been providing photos for
+---remove prev and next buttons
+---remove submit button - photo should be accessed as soon as date is picked
+---default date
+readme file
+provide video url
+downloadable photo
+* */
 public class ApodFrame extends JFrame {
 
     private final DatePicker datePicker;
-    private final JButton submit;
     private JLabel photo;
     private JLabel photoTitle;
     private JTextArea description;
-    private JButton prevYear;
-    private JButton nextYear;
 
     private JPanel photoPanel;
     private JPanel topPanel;
@@ -31,6 +38,9 @@ public class ApodFrame extends JFrame {
 
 
     public ApodFrame() {
+
+        AstronomyPicOfDayServiceFactory factory = new AstronomyPicOfDayServiceFactory();
+        presenter = new ApodPresenter(this, factory.getInstance());
 
         setTitle("Astronomy Picture of the Day");
         setSize(300, 200);
@@ -52,11 +62,10 @@ public class ApodFrame extends JFrame {
 
 
         datePicker = new DatePicker();
+        datePicker.setDateToToday();
+        presenter.loadFromDate(datePicker.getDate().toString());
+        datePicker.addDateChangeListener(this::onDateChosen);
         topPanel.add(datePicker);
-
-        submit = new JButton("Enter Date");
-        submit.addActionListener(this::onSubmitClick);
-        topPanel.add(submit);
 
         photoTitle = new JLabel();
         photoTitle.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -75,32 +84,9 @@ public class ApodFrame extends JFrame {
         photo = new JLabel();
         photoPanel.add(photo);
 
-        prevYear = new JButton("Previous Year");
-        prevYear.addActionListener(this::onSubmitClickPrev);
-        leftPanel.add(prevYear, BorderLayout.WEST);
-
-        nextYear = new JButton("Following Year");
-        nextYear.addActionListener(this::onSubmitClickNext);
-        rightPanel.add(nextYear, BorderLayout.EAST);
-
-        AstronomyPicOfDayServiceFactory factory = new AstronomyPicOfDayServiceFactory();
-        presenter = new ApodPresenter(this, factory.getInstance());
-
     }
 
-    private void onSubmitClickPrev(ActionEvent actionEvent) {
-        LocalDate newDate = datePicker.getDate().minusYears(1);
-        datePicker.setDate(newDate);
-        presenter.loadFromDate(datePicker.getDate().toString());
-    }
-
-    private void onSubmitClickNext(ActionEvent actionEvent) {
-        LocalDate newDate = datePicker.getDate().plusYears(1);
-        datePicker.setDate(newDate);
-        presenter.loadFromDate(datePicker.getDate().toString());
-    }
-
-    private void onSubmitClick(ActionEvent actionEvent) {
+    private void onDateChosen(DateChangeEvent dateChangeEvent) {
         presenter.loadFromDate(datePicker.getDate().toString());
     }
 
