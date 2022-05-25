@@ -22,13 +22,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
 
-/*
-To Do:
-readme file
----downloadable photo
-add screenshots to readme, re-run jar file
-* */
-
 public class ApodFrame extends JFrame {
 
     private final DatePicker datePicker;
