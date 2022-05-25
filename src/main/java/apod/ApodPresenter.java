@@ -36,6 +36,7 @@ public class ApodPresenter {
 
     private void onNext(ApodData apodData) {
         url = apodData.getUrl();
+
         BufferedImage image = null;
 
         if (apodData.getMediaType().equals("image")) {
@@ -45,15 +46,15 @@ public class ApodPresenter {
                 e.printStackTrace();
             }
             view.setPhoto(image);
-
-            String photoDescription = apodData.getDescription();
-            view.setDescription(photoDescription);
-
-            String photoTitle = apodData.getTitle();
-            view.setPhotoTitle(photoTitle);
         } else {
             view.setVideoUrl(url);
         }
+
+        String photoDescription = apodData.getDescription();
+        view.setDescription(photoDescription);
+
+        String photoTitle = apodData.getTitle();
+        view.setPhotoTitle(photoTitle);
 
 
     }
@@ -63,13 +64,8 @@ public class ApodPresenter {
     }
 
 
-    public void download() {
-        try {
-            File file = new File("C:\\Users\\sarab\\IdeaProjects\\nasa_api\\saved_photos\\photo1.jpg");
-            FileUtils.copyURLToFile(url, file);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+    public void downloadPhoto() {
+        view.download(url);
     }
 }
 

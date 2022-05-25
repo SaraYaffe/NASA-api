@@ -25,7 +25,6 @@ import java.time.LocalDate;
 /*
 To Do:
 readme file
----video url
 ---downloadable photo
 add screenshots to readme, re-run jar file
 * */
@@ -125,13 +124,12 @@ public class ApodFrame extends JFrame {
         downloadButton.setVisible(true);
     }
 
-    public void setVideoUrl(URL videoUrl) {   //May 9, 2022
-        String videoStr = videoUrl.toString();
+    public void setVideoUrl(URL videoUrl) {
         photo.setVisible(false);
         downloadButton.setVisible(false);
         video.setVisible(true);
         video.setForeground(Color.BLUE);
-        video.setText(videoStr);
+        video.setText(videoUrl.toString());
         video.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         video.addMouseListener(new MouseAdapter() {
@@ -140,7 +138,7 @@ public class ApodFrame extends JFrame {
                     if (Desktop.isDesktopSupported()) {
                         Desktop desktop = Desktop.getDesktop();
                         try {
-                            URI uri = new URI(videoStr);
+                            URI uri = new URI(videoUrl.toString());
                             desktop.browse(uri);
                         } catch (IOException | URISyntaxException ex) {
                             ex.printStackTrace();
@@ -151,7 +149,6 @@ public class ApodFrame extends JFrame {
         });
 
     }
-
 
 
     public void setDescription(String photoDescription) {
@@ -165,8 +162,19 @@ public class ApodFrame extends JFrame {
     }
 
     private void onSubmitClicked(ActionEvent e) {
-        presenter.download();
+        presenter.downloadPhoto();
 
+    }
+
+    public void download(URL url) {
+        try {
+            File file = new File
+                    //obv wont work for the user - fix
+                    ("C:\\Users\\sarab\\IdeaProjects\\nasa_api\\saved_photos\\photo1.jpg");
+            FileUtils.copyURLToFile(url, file);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 
