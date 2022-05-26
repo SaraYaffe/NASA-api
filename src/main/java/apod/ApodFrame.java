@@ -9,10 +9,7 @@ import org.apache.commons.io.FileUtils;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class ApodFrame extends JFrame {
 
@@ -60,13 +58,9 @@ public class ApodFrame extends JFrame {
         bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
         photoPanel = new JPanel(new FlowLayout());
-        leftPanel = new JPanel(new FlowLayout());
-        rightPanel = new JPanel(new FlowLayout());
         add(topPanel, BorderLayout.NORTH);
         add(bottomPanel, BorderLayout.SOUTH);
         add(photoPanel, BorderLayout.CENTER);
-        add(leftPanel, BorderLayout.WEST);
-        add(rightPanel, BorderLayout.EAST);
 
         dateSettings = new DatePickerSettings();
 
@@ -95,6 +89,9 @@ public class ApodFrame extends JFrame {
         photoPanel.add(photo);
 
         video = new JLabel();
+        video.setForeground(Color.BLUE);
+        video.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        video.addMouseListener(getMouseAdapter());
         photoPanel.add(video);
 
         downloadButton = new JButton("Save Photo");
@@ -117,21 +114,15 @@ public class ApodFrame extends JFrame {
         downloadButton.setVisible(true);
     }
 
-    public void setVideoUrl(URL videoUrl) {
-        photo.setVisible(false);
-        downloadButton.setVisible(false);
-        video.setVisible(true);
-        video.setForeground(Color.BLUE);
-        video.setText(videoUrl.toString());
-        video.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    private MouseAdapter getMouseAdapter() {
+        return new MouseAdapter() {
 
-        video.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() > 0) {
                     if (Desktop.isDesktopSupported()) {
                         Desktop desktop = Desktop.getDesktop();
                         try {
-                            URI uri = new URI(videoUrl.toString());
+                            URI uri = new URI(video.getText());
                             desktop.browse(uri);
                         } catch (IOException | URISyntaxException ex) {
                             ex.printStackTrace();
@@ -139,8 +130,14 @@ public class ApodFrame extends JFrame {
                     }
                 }
             }
-        });
+        };
+    }
 
+    public void setVideoUrl(URL videoUrl) {
+        photo.setVisible(false);
+        downloadButton.setVisible(false);
+        video.setVisible(true);
+        video.setText(videoUrl.toString());
     }
 
 
@@ -159,11 +156,12 @@ public class ApodFrame extends JFrame {
 
     }
 
+
     public void download(URL url) {
+
         try {
-            File file = new File(//obv wont work for the user - fix
-                    "C:\\Users\\sarab\\IdeaProjects\\nasa_api\\saved_photos\\photo1.jpg");
-            FileUtils.copyURLToFile(url, file);
+            File desktop = new File(System.getProperty("user.home"), "/Desktop");
+            FileUtils.copyURLToFile(url, new File(desktop, "apod " + datePicker.getDate()));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
