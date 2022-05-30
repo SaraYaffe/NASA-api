@@ -12,6 +12,7 @@ This project uses:
 - Gradle
 - [LGoodDatePicker](https://github.com/LGoodDatePicker/LGoodDatePicker)
 - Apache Commons IO
+- [Dagger](https://www.baeldung.com/dagger-2)
  
 Default Display with today's date
 ![Default display](screenshots/default.png)

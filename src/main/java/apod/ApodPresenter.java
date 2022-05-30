@@ -7,6 +7,8 @@ import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import javax.inject.Provider;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,14 +17,15 @@ import java.net.URL;
 
 public class ApodPresenter {
 
-    private final ApodFrame view;
+    private final Provider<ApodFrame> viewProvider;
     private final AstronomyPicOfDayService model;
     private Disposable disposable;
 
-    private URL url; //not sure this is where this should be
+    private URL url;
 
-    public ApodPresenter(ApodFrame view, AstronomyPicOfDayService model) {
-        this.view = view;
+    @Inject
+    public ApodPresenter(Provider<ApodFrame> viewProvider, AstronomyPicOfDayService model) {
+        this.viewProvider = viewProvider;
         this.model = model;
     }
 
@@ -45,16 +48,16 @@ public class ApodPresenter {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            view.setPhoto(image);
+            viewProvider.get().setPhoto(image);
         } else {
-            view.setVideoUrl(url);
+            viewProvider.get().setVideoUrl(url);
         }
 
         String photoDescription = apodData.getDescription();
-        view.setDescription(photoDescription);
+        viewProvider.get().setDescription(photoDescription);
 
         String photoTitle = apodData.getTitle();
-        view.setPhotoTitle(photoTitle);
+        viewProvider.get().setPhotoTitle(photoTitle);
 
 
     }
@@ -65,7 +68,12 @@ public class ApodPresenter {
 
 
     public void downloadPhoto() {
-        view.download(url);
+        try {
+            File desktop = new File(System.getProperty("user.home"), "/Desktop");
+            FileUtils.copyURLToFile(url, new File(desktop, "apod " + viewProvider.get().datePicker.getDate()));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
 
