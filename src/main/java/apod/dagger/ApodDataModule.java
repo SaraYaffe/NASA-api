@@ -13,7 +13,7 @@ public class ApodDataModule {
     @Singleton
     @Provides
     public AstronomyPicOfDayService providesAstronomyPicOfDayService(
-            AstronomyPicOfDayServiceFactory factory){
+            AstronomyPicOfDayServiceFactory factory) {
         return factory.getInstance();
     }
 

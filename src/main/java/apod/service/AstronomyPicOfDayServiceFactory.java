@@ -9,7 +9,7 @@ import javax.inject.Inject;
 public class AstronomyPicOfDayServiceFactory {
 
     @Inject
-    public AstronomyPicOfDayServiceFactory(){
+    public AstronomyPicOfDayServiceFactory() {
 
     }
 
