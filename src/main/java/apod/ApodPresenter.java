@@ -70,8 +70,8 @@ public class ApodPresenter {
     public void downloadPhoto() {
         try {
             File desktop = new File(System.getProperty("user.home"), "/Desktop");
-            FileUtils.copyURLToFile(url, new File
-                    (desktop, "apod " + viewProvider.get().datePicker.getDate()));
+            FileUtils.copyURLToFile(url, new File(
+                    desktop, "apod " + viewProvider.get().datePicker.getDate()));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
