@@ -4,9 +4,11 @@ import apod.service.ApodData;
 import apod.service.AstronomyPicOfDayService;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.io.FileUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -16,6 +18,8 @@ public class ApodPresenter {
     private final ApodFrame view;
     private final AstronomyPicOfDayService model;
     private Disposable disposable;
+
+    private URL url; //not sure this is where this should be
 
     public ApodPresenter(ApodFrame view, AstronomyPicOfDayService model) {
         this.view = view;
@@ -31,20 +35,27 @@ public class ApodPresenter {
     }
 
     private void onNext(ApodData apodData) {
-        URL photoUrl = apodData.getUrl();
+        url = apodData.getUrl();
+
         BufferedImage image = null;
-        try {
-            image = ImageIO.read(photoUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if (apodData.getMediaType().equals("image")) {
+            try {
+                image = ImageIO.read(url);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            view.setPhoto(image);
+        } else {
+            view.setVideoUrl(url);
         }
-        view.setPhoto(image);
 
         String photoDescription = apodData.getDescription();
         view.setDescription(photoDescription);
 
         String photoTitle = apodData.getTitle();
         view.setPhotoTitle(photoTitle);
+
 
     }
 
@@ -53,6 +64,9 @@ public class ApodPresenter {
     }
 
 
+    public void downloadPhoto() {
+        view.download(url);
+    }
 }
 
 
