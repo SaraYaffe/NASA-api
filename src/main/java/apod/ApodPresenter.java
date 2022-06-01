@@ -41,6 +41,7 @@ public class ApodPresenter {
         url = apodData.getUrl();
 
         BufferedImage image = null;
+        ApodFrame apodFrame = viewProvider.get();
 
         if (apodData.getMediaType().equals("image")) {
             try {
@@ -48,16 +49,17 @@ public class ApodPresenter {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            viewProvider.get().setPhoto(image);
+            apodFrame.setPhoto(image);
+
         } else {
-            viewProvider.get().setVideoUrl(url);
+            apodFrame.setVideoUrl(url);
         }
 
         String photoDescription = apodData.getDescription();
-        viewProvider.get().setDescription(photoDescription);
+        apodFrame.setDescription(photoDescription);
 
         String photoTitle = apodData.getTitle();
-        viewProvider.get().setPhotoTitle(photoTitle);
+        apodFrame.setPhotoTitle(photoTitle);
 
 
     }

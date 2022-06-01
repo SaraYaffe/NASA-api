@@ -35,8 +35,7 @@ public class ApodFrame extends JFrame {
     private JPanel photoPanel;
     private JPanel topPanel;
     private JPanel bottomPanel;
-    private JPanel leftPanel;
-    private JPanel rightPanel;
+
 
 
     private final ApodPresenter presenter;
