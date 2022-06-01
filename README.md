@@ -1,6 +1,6 @@
 # Astronomy picture of the day (NASA)
 
-Displays a downloadable photo or linked video from the [nasa apod api](https://api.nasa.gov/) based on chosen date
+### Displays a downloadable photo or linked video from the [nasa apod api](https://api.nasa.gov/) based on chosen date
 
 
 This project uses:
