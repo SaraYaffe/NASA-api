@@ -8,6 +8,7 @@ import io.reactivex.schedulers.Schedulers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import javax.inject.Provider;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -18,7 +19,8 @@ class ApodPresenterTest {
 
     ApodFrame view = mock(ApodFrame.class);
     AstronomyPicOfDayService model = mock(AstronomyPicOfDayService.class);
-    ApodPresenter presenter = new ApodPresenter(view, model);
+    Provider<ApodFrame> viewProvider = () -> view;
+    ApodPresenter presenter = new ApodPresenter(viewProvider, model);
 
     ApodData apodData = mock(ApodData.class);
 

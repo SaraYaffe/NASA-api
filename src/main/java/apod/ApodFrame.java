@@ -1,31 +1,30 @@
 package apod;
 
-import apod.service.AstronomyPicOfDayServiceFactory;
+
+import apod.dagger.DaggerApodDataComponent;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
-import org.apache.commons.io.FileUtils;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Scanner;
 
+@Singleton
 public class ApodFrame extends JFrame {
 
-    private final DatePicker datePicker;
+    public DatePicker datePicker;
     private final DatePickerSettings dateSettings;
     private final LocalDate firstApod = LocalDate.of(1995, 6, 16);
-
 
     private JLabel photo;
     private JLabel photoTitle;
@@ -36,17 +35,16 @@ public class ApodFrame extends JFrame {
     private JPanel photoPanel;
     private JPanel topPanel;
     private JPanel bottomPanel;
-    private JPanel leftPanel;
-    private JPanel rightPanel;
+
 
 
     private final ApodPresenter presenter;
 
 
-    public ApodFrame() {
+    @Inject
+    public ApodFrame(ApodPresenter presenter) {
 
-        AstronomyPicOfDayServiceFactory factory = new AstronomyPicOfDayServiceFactory();
-        presenter = new ApodPresenter(this, factory.getInstance());
+        this.presenter = presenter;
 
         setTitle("Astronomy Picture of the Day");
         setSize(300, 200);
@@ -157,19 +155,8 @@ public class ApodFrame extends JFrame {
     }
 
 
-    public void download(URL url) {
-
-        try {
-            File desktop = new File(System.getProperty("user.home"), "/Desktop");
-            FileUtils.copyURLToFile(url, new File(desktop, "apod " + datePicker.getDate()));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-
     public static void main(String[] args) {
-        JFrame frame = new ApodFrame();
+        ApodFrame frame = DaggerApodDataComponent.create().getApodFrame();
         frame.setVisible(true);
     }
 
